@@ -1,0 +1,61 @@
+---
+title: "A brief introduction to linear models in R"
+output: 
+    html_document:
+        theme: cerulean
+        css: style.css
+---
+
+This is a short version of the Monash Bioinformatics Platform's ["Introduction to linear models"](https://monashbioinformaticsplatform.github.io/r-linear/) workshop, for the Bioconductor Training Day following ABACBS 2018.
+
+## Files
+
+* [r-linear-files.zip](r-linear-files.zip) - Files used in this workshop.
+
+## Workshop notes
+
+* [Slideshow](slides/linear_thinking.html)
+* [Linear models in R](topics/linear_models.html)
+
+
+## Key functions to remember
+
+Built-in to R: 
+
+    lm, anova, model.matrix, coef, sigma, df.residual, predict, confint, summary
+    I, poly
+
+`splines` -- curve fitting:
+
+    ns, bs
+
+`multcomp` -- contrasts and multiple comparisons: 
+
+    glht, confint, summary
+
+`limma` and `edgeR` -- fitting many models to gene expression data: 
+
+    DGEList, calcNormFactors, cpm
+    lmFit, contrasts.fit, eBayes, plotSA, topTable
+
+## Links
+
+* [More workshop materials from Monash Data Fluency](https://monashdatafluency.github.io/resources/)
+* [Monash Data Fluency](https://www.monash.edu/data-fluency)
+* [Monash Bioinformatics Platform](https://www.monash.edu/researchinfrastructure/bioinformatics)
+* [James, Witten, Hastie and Tibshirani (2013) "An Introduction to Statistical Learning"](https://www-bcf.usc.edu/~gareth/ISL/)
+* [Dance of the CIs](http://logarithmic.net/2017/dance/)
+
+## Author
+
+This course has been developed for the [Monash Bioinformatics Platform](https://www.monash.edu/researchinfrastructure/bioinformatics) and [Monash Data Fluency](https://www.monash.edu/data-fluency) by Paul Harrison.
+
+<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="figures/CC-BY.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+
+## Source code
+
+* [GitHub repository](https://github.com/MonashBioinformaticsPlatform/r-linear-abacbs2018)
+
+<p style="margin-top: 5em; text-align: right">
+<a href="http://bioinformatics.erc.monash.edu"><img src="figures/MBP-banner.png" width="675"></a>
+</p>

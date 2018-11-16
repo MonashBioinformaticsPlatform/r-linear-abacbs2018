@@ -1,0 +1,11 @@
+html_document:
+    number_sections: true
+    toc: true
+    toc_depth: 2
+    toc_float: true
+    theme: cerulean
+    css: ../style.css
+    includes:
+        after_body: footer.html
+
+
