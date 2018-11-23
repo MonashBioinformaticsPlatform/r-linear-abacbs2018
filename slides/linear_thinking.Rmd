@@ -16,11 +16,13 @@ knitr::opts_chunk$set(fig.width=5, fig.height=5)
 
 ## Introduction
 
-* Hypothesis: lots of people mostly use R for Bioconductor
-* R has a lot of other cool stuff in it
-* A lot of the cool stuff in R has to do with **linear models**
-* Bioconductor packages may assume users are familiar with this
+Why learn about linear models?
 
+>* very useful, and a core feature of R
+>* Bioconductor packages may assume users are familiar with linear models
+
+<br>
+This is only a foot in the door to a very big topic with a long history
 
 
 ## Linear models
@@ -70,55 +72,20 @@ Primary reference is "Statistical models in S".
 
 ## Linear maths and R
 
-<!--
-Will give everything today in English, in maths, and in R code.
--->
+A matrix in R is different from a data frame.
 
-We will be using vectors and matrices extensively today.
+A matrix can be created from a vector using `matrix`, or from a data frame with `as.matrix`, or from multiple vectors with `cbind` (bind columns) or `rbind` (bind rows).
 
-In mathematics, we usually treat a vector as a matrix with a single column. In R, they are two different types. <span class="tip">*<span class="tiptext">R also makes a distinction between `matrix` and `data.frame` types. There is a good chance you have used data frames but not matrices before now.<br><br>Matrices contain all the same type of value, typically numeric, whereas data frames can have different types in different columns.</span></span>
+In maths we usually think of vectors as single column matrices, but these are different types in R.
 
-A matrix can be created from a vector using `matrix`, or from multiple vectors with `cbind` (bind columns) or `rbind` (bind rows).
+Common operations:
 
-Matrix transpose exchanges rows and columns. In maths it is indicated with a small t, eg $a^\top$. In R use the `t` function, eg `t(a)`.
-
-$$
-a = \begin{bmatrix} 1 & 4 \\ 2 & 5 \\ 3 & 6 \end{bmatrix} 
-\quad \quad a^\top = \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix} 
-$$
-
-## Linear maths and R
-
-Taking the **dot product** of two vectors we multiply corresponding elements together and add the results to obtain a total.
-
-In mathematical notation:
-
-$$
-a^\top b = \sum_{i=1}^{n} a_i b_i
-$$
-
-In R:
-
-```{r eval=F}
-sum(a*b)
-```
-
-## Linear maths and R
-
-Taking the product of a matrix $X$ and a vector $a$ with length matching the number of columns, the result is a vector containing the dot product of each row of the matrix $X$ with the vector $a$.
-
-$$
-Xa
-$$
-
-In R:
-
-```{r eval=F}
-X %*% a
-```
-
-(It's also possible to multiply two matrices with `%*%` but we won't need this today.)
-
+<div style="margin-left:2em">
+`sum(a*b)` - dot product of two vectors <br>
+`A %*% B` - matrix product <br>
+`A %*% b` - matrix times a vector (treated as a single colum) <br>
+`t(A)` - matrix transpose (swap columns and rows)
+</div>
 
 ## Geometry
 
@@ -139,26 +106,6 @@ The dot product of a vector with itself $a^\top a$ is the square of its length. 
 ### Right angles
 
 Two vectors at right angles have a dot product of zero. They are **orthogonal**.
-
-
-## Geometry - subspaces
-
-> * A line in two or more dimensions, passing through the origin.
-> * A plane in three or more dimensions, passing through the origin.
-> * A point at the origin.
-
-These are all examples of **subspaces**.
-
-Think of all the vectors that could result from multiplying a matrix $X$ with some arbitrary vector. 
-
-If the matrix $X$ has $n$ rows and $p$ columns, we obtain an (at most) $p$-dimensional **subspace** within an $n$-dimensional space.
-
-A subspace has an **orthogonal subspace** with $n-p$ dimensions. All the vectors in a subspace are orthogonal to all the vectors in its orthogonal subspace.
-
-
-##
-
-Do section: Vectors and matrices
 
 
 ## Models
@@ -338,161 +285,6 @@ First look at examples then discuss process in detail.
 
 
 
-## 
-
-Do section: Single numerical predictor
-
-Do section: Single factor predictor, two levels
-
-
-## Testing hypotheses
-
-<div style="float: right; width: 15em;">
-```{r}
-y <- c(3,5)
-fit0 <- lm(y ~ 0)
-fit1 <- lm(y ~ 1)
-```
-
-Two model formulas representing null hypotheses H0 and alternative hypothesis H1.
-
-H0 must *nest* within H1.
-
-$\hat\varepsilon_0$ can't be shorter than $\hat\varepsilon_1$
-
-Is it *surprisingly longer*? Then we reject H0.
-</div>
-
-```{r echo=F}
-begin()
-to_test()
-```
-
-## Testing hypotheses
-
-<div style="float: right; width: 15em;">
-```{r}
-y <- c(3,5)
-fit0 <- lm(y ~ 0)
-fit1 <- lm(y ~ 1)
-
-anova(fit0, fit1)
-```
-
-Here we can not reject the null hypothesis (F(1,1)=16, p=0.156). <span class="tip">*<span class="tiptext">If H0 is true, we expect F to be close to 1. This value of F is much larger than 1. Why can't we reject H0? The problem is that we are very uncertain about $\sigma$ because our residual degrees of freedom is so low. Hence the F(1,1) distribution here has a very long fat tail.</span></span>
-</div>
-
-```{r echo=F}
-begin()
-to_test()
-```
-
-## Testing hypotheses -- the gory details
-
-<div style="float: right; width: 15em">
-```{r}
-df0 <- df.residual(fit0)       # n-p0
-RSS0 <- sum(residuals(fit0)^2)
-
-df1 <- df.residual(fit1)       # n-p1
-RSS1 <- sum(residuals(fit1)^2)
-
-F <- (RSS0-RSS1)/(df0-df1) / (RSS1/df1) 
-F
-pf(F, df0-df1, df1, lower.tail=FALSE)
-```
-</div>
-$$
-RSS_0 = \hat\varepsilon_0^\top \hat\varepsilon_0 \\
-RSS_1 = \hat\varepsilon_1^\top \hat\varepsilon_1
-$$
-
-<br>
-
-$$
-F = { {RSS_0-RSS_1 \over p_1-p_0} \over {RSS_1 \over n-p_1} }
-$$
-
-RSS = Residual Sum of Squares
-
-Is the increase in RSS in H0 merely proportionate 
-<br>to the extra degree(s) of freedom?
-
-<div style="font-size: 150%">`anova(fit0, fit1)`<br>handles all this for us.</div>
-
-
-
-## A different way to test: linear hypotheses
-
-"linear hypothesis" "general linear hypothesis" "linear restriction" "contrast"
-
-<br>
-A **linear hypothesis** test tests an H0 in which some linear combination of coefficients in H1 is restricted to be zero.
-
-<br>
-From a linear combination of coefficients we obtain:
-
->* estimated value (calculated with dot product)
->* Confidence Interval (CI)
->* hypothesis test p-value
-
-<br>
-Examples:
-
->* a **contrast** compares specific levels of an experimental factor<span class="tip">*<span class="tiptext">Terminology is a little tricky here. The limma package refers to linear combinations in general as contrasts.</span></span>
->* the difference of response between two imagined individuals
-
-<br>
-Use `multcomp` package.
-
-
-##
-
-Do section: Multiple factors, many levels
-
-
-## What is a p-value anyway?
-
-A p-value lets us choose our probability of falsely rejecting a true hypothesis.
-
-If H1 is true, tends towards zero.
-
-If H0 is true, it is a uniformly random number between 0 and 1.
-
-<br>
-
-If we decide to reject hypotheses with $p \leq 0.05$, we are guaranteed a probability of 0.05 of rejecting a hypothesis if it is actually true.
-
-<br>
-
-Suppose we perform 20 such tests. There is a high chance of falsely rejecting at least one of them.
-
-Need to adjust p-values for this problem (see `p.adjust( )`).
-
-
-
-## Multiple testing
-
-Suppose some set of hypotheses are true. What chance do we run of rejecting one or more of them?
-
-### Hypotheses are mutually exclusive
-
-> * No problem!
-
-Example: reject all values outside a confidence interval.
-
-### Family-Wise Error Rate (FWER) control
-
-"*Any* false rejection will ruin my argument."
-
-> * Tukey's Honestly Significant Differences
-> * Bonferroni correction (etc)
-
-### False Discovery Rate (FDR) control
-
-"I can tolerate a certain *rate* of false rejections amongst rejected hypotheses."
-
-> * Benjamini and Hochberg correction (etc)
 
 
 ## Formulas
@@ -501,13 +293,24 @@ Example: reject all values outside a confidence interval.
 
 Formulas with `~` specify response $y$ and the construction of the model matrix $X$.
 
+"Add" together a series of terms to specify a set of predictors.
+
 Terms refer to columns of a data frame or variables in the environment.
 
-Merely a convenience, if you already have model matrix `X` can just use `y ~ 0 + X`.
+Merely a convenience, if you already have model matrix `X` can use `y ~ 0+X`.
 
-<br>
 
-Let's discuss this in more detail.
+
+## Formulas - intercept
+
+Intercept term `1` is implicit.
+
+Includes a column of 1s in the model matrix.
+
+Coefficient represents the prediction when all other predictors are zero.
+
+Omit with `-1` or `0`.
+
 
 ## Formulas - data types
 
@@ -520,9 +323,39 @@ Let's discuss this in more detail.
 `matrix` is represented as multiple columns.
 
 
-## Formulas - factors
+## Testing hypotheses
 
-$n_\text{levels}-1$ columns of "indicator variables", aka "one-hot" encoding. <span class="tip">*<span class="tiptext">The encoding can be adjusted using the `C( )` function within a formula. The default differs between S and R languages!</span></span>
+Two equivalent methods
+
+**F test**
+
+>* Can we reject a simpler model formula based on a more complex one?
+>* Model formulas must **nest**: any model using the simpler set of predictors must have an exact equivalent with the more complex set of predictors
+>* Dropping a single predictor is a special case of this <br>(`summary( )` uses t rather than F statistic, but p-value is the same)
+
+**Linear hypothesis test**
+
+>* Hypothesize that a linear combination of coefficients is zero 
+>* Equivalent to first method, see `limma::contrastAsCoef( )`
+
+
+## Confidence interval
+
+>* Rather than removing a coefficient (or linear combination of coefficients), hypothesize it has some fixed value
+>* Report the range in which such hypotheses are *not* rejected
+>* Can see if effect is not just non-zero but of meaningful size
+
+
+##
+
+Do section: Single numerical predictor
+
+
+## More on formulas - factors
+
+$n_\text{levels}-1$ columns of "indicator variables", for all but the first level of the factor. <span class="tip">*<span class="tiptext">The encoding can be adjusted using the `C( )` function within a formula. The default differs between S and R languages!</span></span>
+
+Coefficients will represent difference from first level.
 
 ```{r}
 f <- factor(c("a","a","b","b","c","c"))
@@ -531,13 +364,11 @@ model.matrix(~ f)
 ```
 
 
-## Formulas - intercept
-
-Intercept term `1` is implicit.
-
-Omit with `-1` or `0`.
+## More on formulas - factors and the intercept
 
 R tries to be clever about factor encoding if intercept omitted.
+
+Without intercept, coefficient represents the average for that level (if all other predictors are zero).
 
 ```{r}
 f <- factor(c("a","a","b","b","c","c"))
@@ -556,7 +387,12 @@ model.matrix(~ 0 + f)
 </div>
 
 
-## Formulas - calculations and function calls
+## 
+
+Do section: Single factor predictor
+
+
+## More on formulas - calculations and function calls
 
 Can calculate with function calls, or enclose maths in `I( )`.
 
@@ -579,7 +415,7 @@ model.matrix(~ poly(x,3))
 </div>
 
 
-## Formulas - interactions
+## More on formulas - interactions
 
 `a:b` specifies an interaction between `a` and `b`. 
 
@@ -594,7 +430,7 @@ For logical and factor vectors, this produces the logical "and" of each pairing.
 model.matrix(~ f + x + f:x)
 ```
 
-## Formulas - interactions
+## More on formulas - interactions
 
 `a*b` is shorthand to also include main effects `a + b + a:b`.
 
@@ -610,53 +446,43 @@ model.matrix(~ f + x + f:x)
 model.matrix(~ f*x)
 ```
 
-
 ##
 
 Do section: Gene expression example
 
+Do section: Testing many genes with limma
+
+Do section: Fitting curves
 
 
 ## Summary
 
 Should now be able to
 
->* fit linear models
->* understand the importance of different parts of the fitted model
-><ul>
->    <li> coefficients
->    <li> residual standard deviation
->    <li> residual degrees of freedom
-></ul>
->* predict using a model
->* test a hypothesis using two nested linear models
->* test a hypothesis and calculate a CI on a linear combination of coefficients
->* test a hypothesis against many sets of responses using limma
->* understand multiple testing correction
+>* specify linear models using formula notation
+>* describe the meanings of coefficients
+>* check residuals
+>* test hypotheses
+>* calculate confidence intervals
 
-
-## Summary - problems with linear models
-
-Incorrect transformation of y can introduce spurious interactions.
-
-Highly correlated predictors, or completely confounded experimental design.
-
-Problems with residual noise:
-
->* Non-uniform noise level between conditions
->* Remaining structure
->* Non-normal distribution <div class="tip">*<div class="tiptext">Least squares estimation still has good properties when the noise is not normally distributed, as a way to predict averages, if averages are truly what we want ("BLUE"). However outliers can lead to mis-estimating the accuracy of the model. This is as much about beliefs and past experience as observation -- if outliers are rare, a sample *without* outliers may give a misleading estimate. In the worst case the outliers may be so large the variance doesn't exist, and least squares does completely break down.<br><br>For example it would be important to include outliers like the Global Financial Crisis in an average yearly return on investment, see Nasim Taleb.</div></div>
-
-Various more advanced methods exist if these are present, such as quantile regression and "sandwich" estimation of the accuracy of coefficients and contrasts.
 
 
 ## Extensions to linear models
 
-### Insufficient data or $p > n$
+Can consider gene expression (and other "high-throughput" measurements) either as a responses to a treatment or as predictors of an outcome.
+
+### Many responses
+
+>* use limma to fit and test many models
+
+### Many predictors, $p > n$
 
 >* regularization with ridge regression and/or LASSO: `glmnet::glmnet( )`
->* Partial Least Squares (PLS) <br>(pick best direction to start moving in and take best leap along it, repeat)
 >* Principal Component Regression (PCR)<br>(direction of largest variation in X first)
+>* Partial Least Squares (PLS) <br>(pick best direction to start moving in and take best leap along it, repeat)
+
+
+## Extensions to linear models
 
 ### Noise not normal (eg binary or count data)
 

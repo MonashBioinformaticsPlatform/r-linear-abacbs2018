@@ -8,6 +8,12 @@ output:
 
 This is a short version of the Monash Bioinformatics Platform's ["Introduction to linear models"](https://monashbioinformaticsplatform.github.io/r-linear/) workshop, for the Bioconductor Training Day following ABACBS 2018.
 
+Data should be already loaded on the virtual machines for the workshop, but you will need to download the R script we will be working from:
+
+```
+download.file("https://github.com/MonashBioinformaticsPlatform/r-linear-abacbs2018/raw/master/r-linear-files/linear_models_abacbs2018.R")
+```
+
 ## Files
 
 * [r-linear-files.zip](r-linear-files.zip) - Files used in this workshop.
@@ -15,7 +21,7 @@ This is a short version of the Monash Bioinformatics Platform's ["Introduction t
 ## Workshop notes
 
 * [Slideshow](slides/linear_thinking.html)
-* [Linear models in R](topics/linear_models.html)
+* [Linear models in R](topics/linear_models_abacbs2018.html)
 
 
 ## Key functions to remember
