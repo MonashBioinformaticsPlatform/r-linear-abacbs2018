@@ -10,7 +10,7 @@ output:
 [tinyurl.com/linear-bioc2018](https://tinyurl.com/linear-bioc2018)
 </div>
 
-This is a short version of the Monash Bioinformatics Platform's ["Introduction to linear models"](https://monashbioinformaticsplatform.github.io/r-linear/) workshop, for the Bioconductor Training Day following ABACBS 2018.
+This is a short version of the Monash Bioinformatics Platform's ["Introduction to linear models"](https://monashbioinformaticsplatform.github.io/r-linear/) workshop, for the [Bioconductor Training Day](https://www.abacbs.org/conference2018/bioc2018-handson-training-day/) following ABACBS 2018.
 
 Data should be already loaded in the "data" folder on the virtual machines for the workshop, but you will need to download the R script we will be working from:
 
