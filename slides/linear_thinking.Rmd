@@ -19,9 +19,9 @@ knitr::opts_chunk$set(fig.width=5, fig.height=5)
 Why learn about linear models?
 
 >* Encompass many common statistical methods
->* Starting point for more advanced statistics
+>* Starting point for more advanced statistics and machine learning
 >* A core feature of R
->* Many Bioconductor packages assume users are familiar with linear models
+>* Many Bioconductor packages assume users familiar with linear models
 
 <br>
 This will be only a taste of a big topic with a long history.
@@ -474,7 +474,7 @@ Should now be able to
 
 ## Extensions to linear models
 
-Can consider gene expression (and other "high-throughput" measurements) either as a responses to a treatment or as predictors of an outcome.
+It's possible to treat gene expressions (and other "high-throughput" measurements) either as responses or as predictors.
 
 ### Many responses
 
