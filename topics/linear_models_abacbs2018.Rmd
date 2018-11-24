@@ -206,6 +206,22 @@ confint(fit)
 ```
 
 
+### Question {.challenge}
+
+```{r eval=F}
+y <- c(5,3,2,4,1)
+fit0 <- lm(y ~ 0)
+fit1 <- lm(y ~ 1)
+anova(fit0, fit1)
+```
+
+1. Describe the null hypothesis (fit0).
+
+2. Describe the alternative hypothesis (fit1).
+
+3. What have we shown with this test?
+
+
 
 # Single factor predictor
 
@@ -260,9 +276,9 @@ ginv(X) %>% round(2)
 ginv(X) %*% outcomes$outcome   #Confirm estimates are the same
 ```
 
-## F-test
+## F test
 
-An F-test comparing to a null hypothesis model with just an intercept term tells us if there are any detectable differences between groups.
+An F test comparing to a null hypothesis model with just an intercept term tells us if there are any detectable differences between groups.
 
 ```{r}
 outfit_null <- lm(outcome ~ 1, data=outcomes)
@@ -278,7 +294,7 @@ summary(outfit)
 confint(outfit)
 ```
 
-What about "b" vs "a"? For this we need a linear hypothesis test (note: this is called a "contrast" in limma).
+What about "b" vs "a"? For this we need a linear hypothesis test.
 
 ```{r}
 coef(outfit)[3] - coef(outfit)[2]
@@ -381,7 +397,7 @@ log2_acefit <- lm( log2(gene_ace) ~ tooth+day, data=teeth)
 look(log2(teeth$gene_ace), log2_acefit)
 ```
 
-Various transformations of y are possible. Log transformation is commonly used in the context of gene expression. Square root transformation can also be appropriate with nicely behaved count data (technically, if the errors follow a Poisson distribution). This gene expression data is ultimately count based, but is overdispersed compared to the Poisson distribution so square root transformation isn't appropriate in this case. The Box-Cox transformations provide a spectrum of further options.
+Various transformations of y are possible. Log transformation is commonly used in the context of gene expression. Square root transformation can also be appropriate with nicely behaved count data (technically, if the errors follow a Poisson distribution). This gene expression data is ultimately count based, but is overdispersed compared to the Poisson distribution so square root transformation isn't appropriate in this case.
 
 ### Pou3f3 gene
 
@@ -421,13 +437,13 @@ qqline(residuals(log2_pou3f3fit0))
 ```
 
 
-## Challenge - Wnt2 gene {.challenge}
+## Homework - Wnt2 gene {.challenge}
 
 Look at the expression of gene Wnt2 in column `gene_wnt2`.
 
 1. Try some different model formulas.
 
-2. Justify a particular model by rejecting simpler alternatives using `anova( )`.
+2. Justify a particular model by rejecting simpler alternatives using `anova( )`. For example, is it necessary to think there is an interaction between tooth and day?
 
 
 
@@ -441,8 +457,8 @@ Actually in the teeth dataset, the expression level of all genes was measured!
 
 ```{r warning=F, message=F}
 counts_df <- read_csv("data/teeth-read-counts.csv")
-counts <- as.matrix( select(counts_df, -gene) )
-rownames(counts) <- counts_df$gene
+counts <- as.matrix(counts_df[,-1])
+rownames(counts) <- counts_df[[1]]
 
 dim(counts)
 counts[1:5,]
@@ -492,7 +508,7 @@ class(fit)
 fit$coefficients[1:5,]
 ```
 
-Significance testing in limma is by the use of linear hypotheses (which limma refers to as "contrasts"). A difference between `glht` and limma's `contrasts.fit` is that limma uses columns rather than rows.
+Significance testing in limma is by the use of linear hypotheses (which limma refers to as "contrasts"). A difference between `glht` and limma's `contrasts.fit` is that limma expects the contrasts in columns rather than rows.
 
 We will first look for genes where the slope over time is not flat, *averaging* the lower and upper teeth.
 
@@ -569,9 +585,9 @@ topTable(efit2)
 A shortcut would be to use `contrasts.fit(fit, coefficients=2:4)` here instead, or to specify a set of coefficients directly to `topTable( )`. The results would be the same.
 
 
-## Challenge - construct some linear hypotheses {.challenge}
+## Homework - construct some linear hypotheses {.challenge}
 
-Construct and use linear combinations to find genes that:
+Construct and use linear combinations of coefficients to find genes that:
 
 1. Differ in slope between lower and upper molars.
 
@@ -579,7 +595,7 @@ Construct and use linear combinations to find genes that:
 
 Hint: hypothesis 2 can be viewed as the difference in predictions between two individual samples.
 
-3. Construct a pair of linear combinations that when used together in an F test find genes with non-zero slope in either or both the lower or upper molars.
+3. Construct a pair of linear combinations that when used together in an F test find genes with non-zero slope in either or both of the lower and upper molars.
 
 
 
@@ -658,7 +674,7 @@ It's worthwhile checking `df.prior` when using limma, as a low value may indicat
 
 ## False Coverage-statement Rate corrected CIs
 
-We noted the CIs produced by limma were not adjusted for multiple testing. A False Coverage-statement Rate (FCR) corrected CI can be constructed corresponding to a set of genes judged significant. The smaller the selection of genes as a proportion of the whole, the greater the correction required. To ensure a False Coverage-statement Rate of q, we use the confidence interval `(1-q*n_genes_selected/n_genes_total)*100%`.
+We noted the CIs produced by limma were not adjusted for multiple testing. A False Coverage-statement Rate (FCR) corrected CI can be constructed corresponding to a set of genes judged significant. The smaller the selection of genes as a proportion of the whole, the greater the correction required. To ensure a False Coverage-statement Rate of q, we need `(1-q*n_genes_selected/n_genes_total)*100%` confidence intervals.
 
 ```{r}
 all_results <- topTable(efit, n=Inf)

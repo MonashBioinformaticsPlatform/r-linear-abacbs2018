@@ -170,6 +170,19 @@ summary(fit)
 
 confint(fit)
 
+# 2.3.1 Question ----
+
+y <- c(5,3,2,4,1)
+fit0 <- lm(y ~ 0)
+fit1 <- lm(y ~ 1)
+anova(fit0, fit1)
+
+# 1. Describe the null hypothesis (fit0).
+#
+# 2. Describe the alternative hypothesis (fit1).
+#
+# 3. What have we shown with this test?
+#
 
 
 #///////////////////////////////
@@ -226,9 +239,9 @@ X <- model.matrix(~ group, data=outcomes)
 ginv(X) %>% round(2)
 ginv(X) %*% outcomes$outcome   #Confirm estimates are the same
 
-# 3.2 F-test ----
+# 3.2 F test ----
 #
-# An F-test comparing to a null hypothesis model with just an intercept
+# An F test comparing to a null hypothesis model with just an intercept
 # term tells us if there are any detectable differences between groups.
 
 outfit_null <- lm(outcome ~ 1, data=outcomes)
@@ -242,8 +255,7 @@ anova(outfit_null, outfit)
 summary(outfit)
 confint(outfit)
 
-# What about "b" vs "a"? For this we need a linear hypothesis test
-# (note: this is called a "contrast" in limma).
+# What about "b" vs "a"? For this we need a linear hypothesis test.
 
 coef(outfit)[3] - coef(outfit)[2]
 
@@ -361,8 +373,7 @@ look(log2(teeth$gene_ace), log2_acefit)
 # (technically, if the errors follow a Poisson distribution). This gene
 # expression data is ultimately count based, but is overdispersed
 # compared to the Poisson distribution so square root transformation
-# isn't appropriate in this case. The Box-Cox transformations provide a
-# spectrum of further options.
+# isn't appropriate in this case.
 
 # 4.1.2 Pou3f3 gene ----
 #
@@ -400,14 +411,15 @@ look(log2(teeth$gene_pou3f3), log2_pou3f3fit0)
 qqnorm(residuals(log2_pou3f3fit0))
 qqline(residuals(log2_pou3f3fit0))
 
-# 4.2 Challenge - Wnt2 gene ----
+# 4.2 Homework - Wnt2 gene ----
 #
 # Look at the expression of gene Wnt2 in column gene_wnt2.
 #
 # 1. Try some different model formulas.
 #
 # 2. Justify a particular model by rejecting simpler alternatives using
-# anova( ).
+# anova( ). For example, is it necessary to think there is an
+# interaction between tooth and day?
 #
 
 
@@ -426,8 +438,8 @@ qqline(residuals(log2_pou3f3fit0))
 # measured!
 
 counts_df <- read_csv("data/teeth-read-counts.csv")
-counts <- as.matrix( select(counts_df, -gene) )
-rownames(counts) <- counts_df$gene
+counts <- as.matrix(counts_df[,-1])
+rownames(counts) <- counts_df[[1]]
 
 dim(counts)
 counts[1:5,]
@@ -483,7 +495,8 @@ fit$coefficients[1:5,]
 
 # Significance testing in limma is by the use of linear hypotheses
 # (which limma refers to as "contrasts"). A difference between glht and
-# limma's contrasts.fit is that limma uses columns rather than rows.
+# limma's contrasts.fit is that limma expects the contrasts in columns
+# rather than rows.
 #
 # We will first look for genes where the slope over time is not flat,
 # *averaging* the lower and upper teeth.
@@ -552,9 +565,10 @@ topTable(efit2)
 # instead, or to specify a set of coefficients directly to topTable( ).
 # The results would be the same.
 
-# 5.6 Challenge - construct some linear hypotheses ----
+# 5.6 Homework - construct some linear hypotheses ----
 #
-# Construct and use linear combinations to find genes that:
+# Construct and use linear combinations of coefficients to find genes
+# that:
 #
 # 1. Differ in slope between lower and upper molars.
 #
@@ -564,8 +578,8 @@ topTable(efit2)
 # between two individual samples.
 #
 # 3. Construct a pair of linear combinations that when used together in
-# an F test find genes with non-zero slope in either or both the lower
-# or upper molars.
+# an F test find genes with non-zero slope in either or both of the
+# lower and upper molars.
 #
 
 
@@ -660,8 +674,8 @@ points(efit$Amean, efit$s2.post^0.25, col="red", cex=0.2)
 # constructed corresponding to a set of genes judged significant. The
 # smaller the selection of genes as a proportion of the whole, the
 # greater the correction required. To ensure a False Coverage-statement
-# Rate of q, we use the confidence interval
-# (1-q*n_genes_selected/n_genes_total)*100%.
+# Rate of q, we need (1-q*n_genes_selected/n_genes_total)*100%
+# confidence intervals.
 
 all_results <- topTable(efit, n=Inf)
 significant <- all_results$adj.P.Val <= 0.05
