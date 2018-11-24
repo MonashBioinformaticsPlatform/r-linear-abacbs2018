@@ -1964,7 +1964,7 @@ outfit2</code></pre>
 <h1><span class="header-section-number">4</span> Gene expression example</h1>
 <p>Tooth growth in mouse embryos is studied using RNA-Seq. The RNA expression levels of several genes are examined in the cells that form the upper and lower first molars, in eight individual mouse embryos that have been dissected after different times of embryo development. The measurements are in terms of “Reads Per Million”, essentially the fraction of RNA in each sample belonging to each gene, times 1 million.</p>
 <p>(This data was extracted from ARCHS4 (<a href="https://amp.pharm.mssm.edu/archs4/" class="uri">https://amp.pharm.mssm.edu/archs4/</a>). In the Gene Expression Omnibus it is entry GSE76316. The sample descriptions in GEO seem to be out of order, but reading the associated paper and the genes they talk about I <em>think</em> I have the correct order of samples!)</p>
-<pre class="r"><code>teeth &lt;- read_csv(&quot;data/teeth.csv&quot;)</code></pre>
+<pre class="r"><code>teeth &lt;- read_csv(&quot;data/linearModels/teeth.csv&quot;)</code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
 ##   sample = col_character(),
@@ -2083,7 +2083,7 @@ qqline(residuals(log2_pou3f3fit0))</code></pre>
 <div id="load-normalize-log-transform" class="section level2">
 <h2><span class="header-section-number">5.1</span> Load, normalize, log transform</h2>
 <p>Actually in the teeth dataset, the expression level of all genes was measured!</p>
-<pre class="r"><code>counts_df &lt;- read_csv(&quot;data/teeth-read-counts.csv&quot;)
+<pre class="r"><code>counts_df &lt;- read_csv(&quot;data/linearModels/teeth-read-counts.csv&quot;)
 counts &lt;- as.matrix(counts_df[,-1])
 rownames(counts) &lt;- counts_df[[1]]
 

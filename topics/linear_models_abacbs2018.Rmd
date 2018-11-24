@@ -340,7 +340,7 @@ Tooth growth in mouse embryos is studied using RNA-Seq. The RNA expression level
 (This data was extracted from ARCHS4 (https://amp.pharm.mssm.edu/archs4/). In the Gene Expression Omnibus it is entry GSE76316. The sample descriptions in GEO seem to be out of order, but reading the associated paper and the genes they talk about I *think* I have the correct order of samples!)
 
 ```{r}
-teeth <- read_csv("data/teeth.csv")
+teeth <- read_csv("data/linearModels/teeth.csv")
 
 teeth$tooth <- factor(teeth$tooth, c("lower","upper"))
 teeth$mouse <- factor(teeth$mouse)
@@ -456,7 +456,7 @@ In this section we look at fitting the same matrix of predictors X to many diffe
 Actually in the teeth dataset, the expression level of all genes was measured!
 
 ```{r warning=F, message=F}
-counts_df <- read_csv("data/teeth-read-counts.csv")
+counts_df <- read_csv("data/linearModels/teeth-read-counts.csv")
 counts <- as.matrix(counts_df[,-1])
 rownames(counts) <- counts_df[[1]]
 

@@ -312,7 +312,7 @@ model.matrix(outfit2)
 # order, but reading the associated paper and the genes they talk about
 # I *think* I have the correct order of samples!)
 
-teeth <- read_csv("data/teeth.csv")
+teeth <- read_csv("data/linearModels/teeth.csv")
 
 teeth$tooth <- factor(teeth$tooth, c("lower","upper"))
 teeth$mouse <- factor(teeth$mouse)
@@ -437,7 +437,7 @@ qqline(residuals(log2_pou3f3fit0))
 # Actually in the teeth dataset, the expression level of all genes was
 # measured!
 
-counts_df <- read_csv("data/teeth-read-counts.csv")
+counts_df <- read_csv("data/linearModels/teeth-read-counts.csv")
 counts <- as.matrix(counts_df[,-1])
 rownames(counts) <- counts_df[[1]]
 
