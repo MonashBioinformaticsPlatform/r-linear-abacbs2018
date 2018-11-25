@@ -21,10 +21,10 @@ Why learn about linear models?
 >* Encompass many common statistical methods
 >* Starting point for more advanced statistics and machine learning
 >* A core feature of R
->* Many Bioconductor packages assume users familiar with linear models
+>* Many Bioconductor packages assume users familiar with linear models<br><br>- In particular, will show how `limma` uses linear models
 
 <br>
-This will be only a taste of a big topic with a long history.
+This will only be a taste of a large topic with a long history.
 
 
 ## Linear models
@@ -78,15 +78,15 @@ A matrix in R is different from a data frame.
 
 A matrix can be created from a vector using `matrix`, or from a data frame with `as.matrix`, or from multiple vectors with `cbind` (bind columns) or `rbind` (bind rows).
 
-In maths we usually think of vectors as single column matrices, but these are different types in R.
+Maths usually treats vectors as single column matrices, but these are different types in R.
 
 Common operations:
 
 <div style="margin-left:2em">
-`sum(a*b)` - dot product of two vectors <br>
-`A %*% B` - matrix product <br>
-`A %*% b` - matrix times a vector (treated as a single colum) <br>
-`t(A)` - matrix transpose (swap columns and rows)
+`sum(a*b)` - dot product of two vectors, $a^\top b$<br>
+`A %*% B` - matrix product, $AB$<br>
+`A %*% b` - matrix times a vector (treated as a single colum), $Ab$<br>
+`t(A)` - matrix transpose (swap columns and rows), $A^\top$
 </div>
 
 ## Geometry
@@ -146,7 +146,7 @@ Typically $x_1$ will always be 1, so $\beta_1$ is a constant term in the model. 
 
 ## Model fitting -- estimating $\beta$
 
-Say we have a observed $n$ responses $y_i$ with corresponding vectors of predictors $x_i$: 
+Say we have observed $n$ responses $y_i$ with corresponding vectors of predictors $x_i$: 
 
 $$ 
 \begin{align}
@@ -283,7 +283,8 @@ Formulas with `~` specify response $y$ and the construction of the model matrix 
 
 Terms refer to columns of a data frame or variables in the environment.
 
-Merely a convenience, if you already have model matrix `X` can use `y ~ 0+X`.
+<br>
+(If you already have a model matrix `X` can use `y ~ 0+X`.)
 
 
 
@@ -314,12 +315,12 @@ Two equivalent methods
 **F test** 
 
 ```{r eval=F}
-anova(fit0, fit1)`
+anova(fit0, fit1)
 ```
 
 >* Can we reject a simpler model formula based on a more complex one?
->* Model formulas must **nest**: any model using the simpler set of predictors must have an exact equivalent with the more complex set of predictors
->* Dropping a single predictor is a special case of this <br>(`summary( )` does this, uses t rather than F statistic but p-value is the same)
+>* Model formulas must **nest**: any model using the simpler set of predictors must have an exact equivalent with the more complex set of predictors.
+>* Dropping a single predictor is a special case of this. <br>(`summary( )` does this, uses t rather than F statistic but p-value is the same.)
 
 <br>
 **Linear hypothesis test** 
@@ -332,11 +333,13 @@ multcomp::glht(fit1, K)
 >* Equivalent to first method, see `limma::contrastAsCoef( )`
 
 
-## Confidence interval
+## Confidence intervals
 
->* Rather than removing a coefficient (or linear combination of coefficients), hypothesize it has some fixed value
->* Report the range in which such hypotheses are *not* rejected
->* Can see if effect is not just non-zero but of meaningful size
+Same basic idea, but testing many hypotheses!
+
+>* Rather than removing a coefficient (or linear combination of coefficients), hypothesize it has some fixed value.
+>* Report the range in which such hypotheses are *not* rejected.
+>* Can see if effect is not just non-zero but of meaningful size.
 
 
 ##
@@ -478,7 +481,7 @@ It's possible to treat gene expressions (and other "high-throughput" measurement
 
 ### Many responses
 
->* use limma to fit and test many models
+>* use `limma` to fit and test many models
 
 ### Many predictors, $p > n$
 
@@ -505,8 +508,8 @@ It's possible to treat gene expressions (and other "high-throughput" measurement
 
 Individuals tracked over time, repeated measurements, blocks/batches/plots, etc.
 
->* Generalized Least Squares (accounts for covariance in noise)
->* Mixed Model (some coefficients are drawn from a random distribution)
+>* Generalized Least Squares: `nlme::gls( )`<br>(accounts for covariance in noise)
+>* Mixed Model: `lme4::lmer( )`<br>(some coefficients are drawn from a random distribution)
 
 ### Response is non-linear in predictors
 

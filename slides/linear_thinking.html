@@ -3148,10 +3148,10 @@ visibility: visible;
 <li>Encompass many common statistical methods</li>
 <li>Starting point for more advanced statistics and machine learning</li>
 <li>A core feature of R</li>
-<li>Many Bioconductor packages assume users familiar with linear models</li>
+<li>Many Bioconductor packages assume users familiar with linear models<br><br>- In particular, will show how <code>limma</code> uses linear models</li>
 </ul>
 
-<p><br> This will be only a taste of a big topic with a long history.</p>
+<p><br> This will only be a taste of a large topic with a long history.</p>
 
 </article></slide><slide class=""><hgroup><h2>Linear models</h2></hgroup><article  class="smaller " id="linear-models">
 
@@ -3213,12 +3213,12 @@ visibility: visible;
 
 <p>A matrix can be created from a vector using <code>matrix</code>, or from a data frame with <code>as.matrix</code>, or from multiple vectors with <code>cbind</code> (bind columns) or <code>rbind</code> (bind rows).</p>
 
-<p>In maths we usually think of vectors as single column matrices, but these are different types in R.</p>
+<p>Maths usually treats vectors as single column matrices, but these are different types in R.</p>
 
 <p>Common operations:</p>
 
 <div style="margin-left:2em">
-<p><code>sum(a*b)</code> - dot product of two vectors <br> <code>A %*% B</code> - matrix product <br> <code>A %*% b</code> - matrix times a vector (treated as a single colum) <br> <code>t(A)</code> - matrix transpose (swap columns and rows)</p></div>
+<p><code>sum(a*b)</code> - dot product of two vectors, \(a^\top b\)<br> <code>A %*% B</code> - matrix product, \(AB\)<br> <code>A %*% b</code> - matrix times a vector (treated as a single colum), \(Ab\)<br> <code>t(A)</code> - matrix transpose (swap columns and rows), \(A^\top\)</p></div>
 
 </article></slide><slide class=""><hgroup><h2>Geometry</h2></hgroup><article  class="smaller " id="geometry">
 
@@ -3271,7 +3271,7 @@ This matches what R does, but may differ from other presentations!</span></span>
 
 </article></slide><slide class=""><hgroup><h2>Model fitting – estimating \(\beta\)</h2></hgroup><article  class="smaller " id="model-fitting-estimating-beta">
 
-<p>Say we have a observed \(n\) responses \(y_i\) with corresponding vectors of predictors \(x_i\):</p>
+<p>Say we have observed \(n\) responses \(y_i\) with corresponding vectors of predictors \(x_i\):</p>
 
 <p>\[ 
 \begin{align}
@@ -3390,7 +3390,7 @@ coef(fit)</pre>
 
 <p>Terms refer to columns of a data frame or variables in the environment.</p>
 
-<p>Merely a convenience, if you already have model matrix <code>X</code> can use <code>y ~ 0+X</code>.</p>
+<p><br> (If you already have a model matrix <code>X</code> can use <code>y ~ 0+X</code>.)</p>
 
 </article></slide><slide class=""><hgroup><h2>Formulas - intercept</h2></hgroup><article  class="smaller " id="formulas---intercept">
 
@@ -3416,12 +3416,12 @@ y ~ 0+x</pre>
 
 <p><strong>F test</strong></p>
 
-<pre class = 'prettyprint lang-r'>anova(fit0, fit1)`</pre>
+<pre class = 'prettyprint lang-r'>anova(fit0, fit1)</pre>
 
 <ul>
 <li>Can we reject a simpler model formula based on a more complex one?</li>
-<li>Model formulas must <strong>nest</strong>: any model using the simpler set of predictors must have an exact equivalent with the more complex set of predictors</li>
-<li>Dropping a single predictor is a special case of this <br>(<code>summary( )</code> does this, uses t rather than F statistic but p-value is the same)</li>
+<li>Model formulas must <strong>nest</strong>: any model using the simpler set of predictors must have an exact equivalent with the more complex set of predictors.</li>
+<li>Dropping a single predictor is a special case of this. <br>(<code>summary( )</code> does this, uses t rather than F statistic but p-value is the same.)</li>
 </ul>
 
 <p><br> <strong>Linear hypothesis test</strong></p>
@@ -3433,12 +3433,14 @@ y ~ 0+x</pre>
 <li>Equivalent to first method, see <code>limma::contrastAsCoef( )</code></li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2>Confidence interval</h2></hgroup><article  class="smaller " id="confidence-interval">
+</article></slide><slide class=""><hgroup><h2>Confidence intervals</h2></hgroup><article  class="smaller " id="confidence-intervals">
+
+<p>Same basic idea, but testing many hypotheses!</p>
 
 <ul>
-<li>Rather than removing a coefficient (or linear combination of coefficients), hypothesize it has some fixed value</li>
-<li>Report the range in which such hypotheses are <em>not</em> rejected</li>
-<li>Can see if effect is not just non-zero but of meaningful size</li>
+<li>Rather than removing a coefficient (or linear combination of coefficients), hypothesize it has some fixed value.</li>
+<li>Report the range in which such hypotheses are <em>not</em> rejected.</li>
+<li>Can see if effect is not just non-zero but of meaningful size.</li>
 </ul>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller " id="section">
@@ -3637,7 +3639,7 @@ model.matrix(~ f)</pre>
 <h3>Many responses</h3>
 
 <ul>
-<li>use limma to fit and test many models</li>
+<li>use <code>limma</code> to fit and test many models</li>
 </ul>
 
 <h3>Many predictors, \(p &gt; n\)</h3>
@@ -3670,8 +3672,8 @@ model.matrix(~ f)</pre>
 <p>Individuals tracked over time, repeated measurements, blocks/batches/plots, etc.</p>
 
 <ul>
-<li>Generalized Least Squares (accounts for covariance in noise)</li>
-<li>Mixed Model (some coefficients are drawn from a random distribution)</li>
+<li>Generalized Least Squares: <code>nlme::gls( )</code><br>(accounts for covariance in noise)</li>
+<li>Mixed Model: <code>lme4::lmer( )</code><br>(some coefficients are drawn from a random distribution)</li>
 </ul>
 
 <h3>Response is non-linear in predictors</h3>
