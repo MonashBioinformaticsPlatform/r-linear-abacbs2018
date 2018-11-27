@@ -418,8 +418,8 @@ qqline(residuals(log2_pou3f3fit0))
 # 1. Try some different model formulas.
 #
 # 2. Justify a particular model by rejecting simpler alternatives using
-# anova( ). For example, is it necessary to think there is an
-# interaction between tooth and day?
+# anova( ). For example, can we reject that there is no interaction
+# between tooth and day?
 #
 
 
@@ -574,8 +574,8 @@ topTable(efit2)
 #
 # 2. Differ in expression on day 16 between the lower and upper molars.
 #
-# Hint: hypothesis 2 can be viewed as the difference in predictions
-# between two individual samples.
+# Hint: the null hypothesis for 2 can be specified as saying the
+# difference in predictions between two particular samples is zero.
 #
 # 3. Construct a pair of linear combinations that when used together in
 # an F test find genes with non-zero slope in either or both of the

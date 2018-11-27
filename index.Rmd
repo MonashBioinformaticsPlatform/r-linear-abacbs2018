@@ -42,7 +42,7 @@ Built-in to R:
 
     ns, bs
 
-`multcomp` -- contrasts and multiple comparisons: 
+`multcomp` -- linear hypothesis tests (aka contrasts) and multiple comparisons: 
 
     glht, confint, summary
 
