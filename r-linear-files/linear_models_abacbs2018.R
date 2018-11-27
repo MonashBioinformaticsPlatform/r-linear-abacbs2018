@@ -401,8 +401,8 @@ qqline(residuals(pou3f3fit1))
 # Log transformation both removes the interaction and makes the
 # residuals more uniform (except for one outlier).
 
-log2_pou3f3fit0 <- lm(log2(gene_pou3f3) ~ tooth + day, data=teeth)
-log2_pou3f3fit1 <- lm(log2(gene_pou3f3) ~ tooth * day, data=teeth)
+log2_pou3f3fit0 <- lm(log2(gene_pou3f3) ~ tooth+day, data=teeth)
+log2_pou3f3fit1 <- lm(log2(gene_pou3f3) ~ tooth*day, data=teeth)
 
 anova(log2_pou3f3fit0, log2_pou3f3fit1)
 
@@ -468,8 +468,8 @@ log2_cpms <- cpm(dgelist, log=TRUE, prior.count=0.25)
 # There is little chance of detecting differential expression in genes
 # with very low read counts. Including these genes will require a larger
 # False Discovery Rate correction, and also confuses limma's Empirical
-# Bayes parameter estimation. Let's only retain genes with an average of
-# 5 reads per sample or more.
+# Bayes parameter estimation. Let's only retain genes with around 5
+# reads per sample or more.
 
 keep <- rowMeans(log2_cpms) >= -3
 log2_cpms_filtered <- log2_cpms[keep,]
@@ -509,8 +509,8 @@ cfit <- contrasts.fit(fit, t(K))       #linear hypotheses in columns!
 efit <- eBayes(cfit, trend=TRUE)
 
 # The call to eBayes does Emprical Bayes squeezing of the residual
-# variance for each gene (see appendix). This is a bit of magic that
-# allows limma to work well with small numbers of samples.
+# variance for each gene (see final section). This is a bit of magic
+# that allows limma to work well with small numbers of samples.
 
 topTable(efit)
 
