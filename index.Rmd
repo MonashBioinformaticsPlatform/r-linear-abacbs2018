@@ -6,7 +6,7 @@ output:
         css: style.css
 ---
 
-<div style="font-size:300%">
+<div style="font-size:150%">
 [tinyurl.com/linear-bioc2018](https://tinyurl.com/linear-bioc2018)
 </div>
 
